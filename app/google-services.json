@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "1048855448122-8hk3p1dcac8355iivt7kfa7efaqf8aph.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.christopherbare.inclass09",
+            "certificate_hash": "4569cd0d67b48c511480ebfd1da3f5e0896a2480"
+          }
+        },
+        {
           "client_id": "1048855448122-juk5f9gs299c0c8qe2oct9s0qlm2jlm9.apps.googleusercontent.com",
           "client_type": 3
         }

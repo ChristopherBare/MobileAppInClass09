@@ -23,11 +23,11 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignUp extends AppCompatActivity {
     private static final String TAG = "demo";
     ImageView image;
-    EditText firstName;
-    EditText lastName;
-    EditText email;
-    EditText password;
-    EditText passwordRepeat;
+    EditText etFirstName;
+    EditText etLastName;
+    EditText etEmail;
+    EditText etPassword;
+    EditText etPasswordRepeat;
     Button buttonSignUp;
     Button buttonCancel;
     FirebaseDatabase database;
@@ -43,12 +43,13 @@ public class SignUp extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         database = FirebaseDatabase.getInstance();
+
         image = (ImageView) findViewById(R.id.contactAddImage);
-        firstName = findViewById(R.id.contactFirstName);
-        lastName = findViewById(R.id.contactLastName);
-        email = findViewById(R.id.contactEmail);
-        password = findViewById(R.id.contactPassword);
-        passwordRepeat = findViewById(R.id.passwordSignUpRepeat);
+        etFirstName = findViewById(R.id.contactFirstName);
+        etLastName = findViewById(R.id.contactLastName);
+        etEmail = findViewById(R.id.contactEmail);
+        etPassword = findViewById(R.id.contactPassword);
+        etPasswordRepeat = findViewById(R.id.passwordSignUpRepeat);
         buttonSignUp = findViewById(R.id.buttonAddContact);
         buttonCancel = findViewById(R.id.buttonCancel);
 
@@ -56,21 +57,26 @@ public class SignUp extends AppCompatActivity {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String email = etEmail.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+                String repeat = etPasswordRepeat.getText().toString().trim();
+                final String firstName = etFirstName.getText().toString().trim();
+                final String lastName = etLastName.getText().toString().trim();
                 Toast.makeText(SignUp.this, "Sign Up Button.", Toast.LENGTH_SHORT).show();
-                if(firstName.getText().toString().equals("")){
+                if(firstName.equals("")){
                     Toast.makeText(SignUp.this, "Enter First Name", Toast.LENGTH_SHORT).show();
-                } else if (lastName.getText().toString().equals("")){
+                } else if (lastName.equals("")){
                     Toast.makeText(SignUp.this, "Enter Last Name", Toast.LENGTH_SHORT).show();
-                } else if (email.getText().toString().equals("")){
+                } else if (email.equals("")){
                     Toast.makeText(SignUp.this, "Enter Email", Toast.LENGTH_SHORT).show();
-                } else if (password.getText().toString().equals("")){
+                } else if (password.equals("")){
                     Toast.makeText(SignUp.this, "Enter Password", Toast.LENGTH_SHORT).show();
-                } else if (passwordRepeat.getText().toString().equals("")){
+                } else if (repeat.equals("")){
                     Toast.makeText(SignUp.this, "Enter Confirm Password", Toast.LENGTH_SHORT).show();
-                } else if (!passwordRepeat.getText().toString().equals(password.getText().toString())){
+                } else if (!repeat.equals(password)){
                     Toast.makeText(SignUp.this, "Enter Passwords Don't Match", Toast.LENGTH_SHORT).show();
                 } else{
-                    mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                    mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -79,7 +85,7 @@ public class SignUp extends AppCompatActivity {
                                         Log.d("demo", "signUpWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                .setDisplayName(firstName.getText().toString() + " " + lastName.getText().toString())
+                                                .setDisplayName(firstName +" "+ lastName)
                                                 .build();
 
                                         user.updateProfile(profileUpdates)
@@ -105,6 +111,7 @@ public class SignUp extends AppCompatActivity {
                                 }
                             });
                 }
+
             }
         });
 

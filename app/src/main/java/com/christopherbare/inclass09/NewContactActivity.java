@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -63,7 +64,7 @@ public class NewContactActivity extends AppCompatActivity {
                 if(name.equals("")){
                     Toast.makeText(NewContactActivity.this, "Enter name", Toast.LENGTH_SHORT).show();
                 } else if(email.equals("")){
-                    Toast.makeText(NewContactActivity.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewContactActivity.this, "Enter etEmail", Toast.LENGTH_SHORT).show();
                 } else if(phone.equals("")){
                     Toast.makeText(NewContactActivity.this, "Enter phone", Toast.LENGTH_SHORT).show();
                 } else{
@@ -78,7 +79,7 @@ public class NewContactActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.buttonCancel).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonCancelContact).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

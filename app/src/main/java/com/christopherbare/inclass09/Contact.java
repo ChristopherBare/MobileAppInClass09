@@ -5,7 +5,7 @@ import android.media.Image;
 public class Contact {
     int picID;
     Image image;
-    String name, phone, email;
+    public String name, phone, email, key;
 
     public Contact(String name, String phone, String email) {
 

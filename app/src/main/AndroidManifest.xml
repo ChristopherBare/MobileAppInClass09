@@ -24,6 +24,7 @@
             android:name=".Contacts"
             android:label="@string/title_activity_contacts"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".NewContactActivity"/>
     </application>
 
 </manifest>
