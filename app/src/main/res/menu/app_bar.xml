@@ -3,5 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Logout" />
+    <item
+        android:id="@+id/logoutButton"
+        android:title="Logout"
+        app:showAsAction="collapseActionView"/>
 </menu>

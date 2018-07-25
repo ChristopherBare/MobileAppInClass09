@@ -20,10 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUp" />
-        <activity
-            android:name=".Contacts"
-            android:label="@string/title_activity_contacts"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".Contacts"/>
         <activity android:name=".NewContactActivity"/>
     </application>
 
