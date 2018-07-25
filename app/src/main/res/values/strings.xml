@@ -12,5 +12,8 @@
     <string name="hint_password_repeat">Repeat Password</string>
     <string name="button_cancel">Cancel</string>
     <string name="title_activity_contacts">Contacts</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
 
 </resources>

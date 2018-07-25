@@ -38,6 +38,7 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
         database = FirebaseDatabase.getInstance();
         image = (ImageView) findViewById(R.id.imageView);
         firstName = findViewById(R.id.firstName);
@@ -75,7 +76,7 @@ public class SignUp extends AppCompatActivity {
                                         Log.d("demo", "signUpWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                .setDisplayName(firstName+" "+lastName)
+                                                .setDisplayName(firstName + " " + lastName)
                                                 .build();
 
                                         user.updateProfile(profileUpdates)
@@ -101,7 +102,6 @@ public class SignUp extends AppCompatActivity {
                                 }
                             });
                 }
-
             }
         });
 
@@ -114,8 +114,6 @@ public class SignUp extends AppCompatActivity {
                 finish();
             }
         });
-
-
 
     }
     
