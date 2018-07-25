@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUp extends AppCompatActivity {
+    private static final String TAG = "demo";
     ImageView image;
     EditText firstName;
     EditText lastName;
@@ -39,14 +40,16 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        mAuth = FirebaseAuth.getInstance();
+
         database = FirebaseDatabase.getInstance();
-        image = (ImageView) findViewById(R.id.imageView);
-        firstName = findViewById(R.id.firstName);
-        lastName = findViewById(R.id.lastName);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.passwordSignUp);
+        image = (ImageView) findViewById(R.id.contactAddImage);
+        firstName = findViewById(R.id.contactFirstName);
+        lastName = findViewById(R.id.contactLastName);
+        email = findViewById(R.id.contactEmail);
+        password = findViewById(R.id.contactPassword);
         passwordRepeat = findViewById(R.id.passwordSignUpRepeat);
-        buttonSignUp = findViewById(R.id.buttonSignUp);
+        buttonSignUp = findViewById(R.id.buttonAddContact);
         buttonCancel = findViewById(R.id.buttonCancel);
 
 
@@ -54,20 +57,20 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(SignUp.this, "Sign Up Button.", Toast.LENGTH_SHORT).show();
-                if(firstName.equals("")){
+                if(firstName.getText().toString().equals("")){
                     Toast.makeText(SignUp.this, "Enter First Name", Toast.LENGTH_SHORT).show();
-                } else if (lastName.equals("")){
+                } else if (lastName.getText().toString().equals("")){
                     Toast.makeText(SignUp.this, "Enter Last Name", Toast.LENGTH_SHORT).show();
-                } else if (email.equals("")){
+                } else if (email.getText().toString().equals("")){
                     Toast.makeText(SignUp.this, "Enter Email", Toast.LENGTH_SHORT).show();
-                } else if (password.equals("")){
+                } else if (password.getText().toString().equals("")){
                     Toast.makeText(SignUp.this, "Enter Password", Toast.LENGTH_SHORT).show();
-                } else if (passwordRepeat.equals("")){
+                } else if (passwordRepeat.getText().toString().equals("")){
                     Toast.makeText(SignUp.this, "Enter Confirm Password", Toast.LENGTH_SHORT).show();
-                } else if (!passwordRepeat.equals(password)){
+                } else if (!passwordRepeat.getText().toString().equals(password.getText().toString())){
                     Toast.makeText(SignUp.this, "Enter Passwords Don't Match", Toast.LENGTH_SHORT).show();
                 } else{
-                    mAuth.createUserWithEmailAndPassword(email.toString(), password.toString())
+                    mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                             .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -76,7 +79,7 @@ public class SignUp extends AppCompatActivity {
                                         Log.d("demo", "signUpWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                .setDisplayName(firstName + " " + lastName)
+                                                .setDisplayName(firstName.getText().toString() + " " + lastName.getText().toString())
                                                 .build();
 
                                         user.updateProfile(profileUpdates)

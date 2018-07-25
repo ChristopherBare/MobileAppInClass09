@@ -3,12 +3,13 @@ package com.christopherbare.inclass09;
 import android.media.Image;
 
 public class Contact {
+    int picID;
     Image image;
     String name, phone, email;
 
-    public Contact(Image image, String name, String phone, String email) {
+    public Contact(String name, String phone, String email) {
 
-        this.image = image;
+
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -50,5 +51,11 @@ public class Contact {
         this.email = email;
     }
 
+    public int getPicID() {
+        return picID;
+    }
 
+    public void setPicID(int picID) {
+        this.picID = picID;
+    }
 }
