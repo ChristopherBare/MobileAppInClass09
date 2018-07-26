@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,16 +11,15 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,12 +32,13 @@ import java.util.Date;
 import java.util.Locale;
 
 public class NewContactActivity extends AppCompatActivity {
-    private final int PICK_IMAGE_CAMERA = 1, PICK_IMAGE_GALLERY = 1;
-    ImageView imageViewSelect;
+    private final int PICK_IMAGE_CAMERA = 1, PICK_IMAGE_GALLERY = 2;
+    ImageView contactAddImage;
     EditText editTextName, editTextPhone, editTextEmail;
-    RadioGroup radioGroup;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
     int id;
 
     Bitmap bitmap;
@@ -48,7 +47,7 @@ public class NewContactActivity extends AppCompatActivity {
     private InputStream inputStreamImg;
     private String imgPath = null;
 
-    private FirebaseStorage storage;
+
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -59,8 +58,9 @@ public class NewContactActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
-        imageViewSelect = findViewById(R.id.contactImage);
+        contactAddImage = findViewById(R.id.contactImage);
         editTextName = findViewById(R.id.contactFirstName);
         editTextPhone = findViewById(R.id.contactLastName);
         editTextEmail = findViewById(R.id.contactEmail);
@@ -90,12 +90,13 @@ public class NewContactActivity extends AppCompatActivity {
                 } else if(phone.equals("")){
                     Toast.makeText(NewContactActivity.this, "Enter phone", Toast.LENGTH_SHORT).show();
                 } else{
-                    Contact person = new Contact(name, phone, email);
-                    person.picID = id;
-                    mDatabase.child("contacts")
-                            .child(mAuth.getCurrentUser().getUid())
-                            .push()
-                            .setValue(person);
+                    Contact contact = new Contact(name, phone, email);
+//                    contact.picID = id;
+//                    mDatabase.child("contacts")
+//                            .child(mAuth.getCurrentUser().getUid())
+//                            .push()
+//                            .setValue(contact);
+                    addContactToDB(contact);
                     finish();
                 }
             }
@@ -167,7 +168,7 @@ public class NewContactActivity extends AppCompatActivity {
                 }
 
                 imgPath = destination.getAbsolutePath();
-                imageViewSelect.setImageBitmap(bitmap);
+                contactAddImage.setImageBitmap(bitmap);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
@@ -186,7 +187,7 @@ public class NewContactActivity extends AppCompatActivity {
 
                 imgPath = getRealPathFromURI(selectedImage);
                 destination = new File(imgPath.toString());
-                imageViewSelect.setImageBitmap(bitmap);
+                contactAddImage.setImageBitmap(bitmap);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
@@ -204,5 +205,18 @@ public class NewContactActivity extends AppCompatActivity {
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    // ADD TO DATABASE
+    private void addContactToDB(Contact contact) {
+        //Save the contact
+        mDatabase.child("contacts").child(contact.getKey()).setValue(contact);
+
+        //Save the image
+        StorageReference imageRef = storageReference.child(contact.getKey());
+        if (byteData != null) imageRef.putBytes(byteData);
+
+        //Finish the activity
+        finish();
     }
 }

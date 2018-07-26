@@ -8,11 +8,10 @@ public class Contact {
     public String name, phone, email, key;
 
     public Contact(String name, String phone, String email) {
-
-
         this.name = name;
         this.phone = phone;
         this.email = email;
+        generateID();
     }
 
     public Contact() {
@@ -57,5 +56,18 @@ public class Contact {
 
     public void setPicID(int picID) {
         this.picID = picID;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    private void generateID() {
+        int random = (int) (Math.random() * 1000000000);
+        this.key = Integer.toString(random);
     }
 }
