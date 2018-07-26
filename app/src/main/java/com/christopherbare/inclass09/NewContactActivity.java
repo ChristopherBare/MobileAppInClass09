@@ -16,8 +16,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -28,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -46,6 +50,8 @@ public class NewContactActivity extends AppCompatActivity {
     private File destination = null;
     private InputStream inputStreamImg;
     private String imgPath = null;
+
+    ArrayList<Contact> contacts;
 
 
 
@@ -209,14 +215,25 @@ public class NewContactActivity extends AppCompatActivity {
 
     // ADD TO DATABASE
     private void addContactToDB(Contact contact) {
-        //Save the contact
-        mDatabase.child("contacts").child(contact.getKey()).setValue(contact);
 
-        //Save the image
-        StorageReference imageRef = storageReference.child(contact.getKey());
-        if (byteData != null) imageRef.putBytes(byteData);
 
-        //Finish the activity
-        finish();
+        mDatabase.child("contacts").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                contacts.clear();
+                for (DataSnapshot node : dataSnapshot.getChildren()){
+                    Contact contact = node.getValue(Contact.class);
+                    contact.key = node.getKey();
+                    contacts.add(contact);
+                }
+               // mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
